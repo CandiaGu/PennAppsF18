@@ -27,6 +27,6 @@ def convert(filename):
     count = 0
     for new_img in divs:
         count += 1
-        cv2.imwrite(filename[:-4] + ' _' + str(count) + '.jpg', new_img)
+        cv2.imwrite(filename[:-4] + '_' + str(count) + '.jpg', new_img)
 
     return count

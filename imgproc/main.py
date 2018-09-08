@@ -13,7 +13,7 @@ def main():
         return 0
     
     for i in range(num_divs):
-        div = filename[:-4] + '_%d' + str(i + 1) + '.jpg'
+        div = filename[:-4] + '_%d' % (i + 1) + '.jpg'
         div_to_elements.extract_elements(div)
         divs.append(div[:-4] + '.json')
 

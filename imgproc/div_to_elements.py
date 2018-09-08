@@ -42,7 +42,7 @@ def extract_elements(filename):
     # filename = "color_test.jpg"
 
     image = cv2.imread(filename)
-    #hsv=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    hsv=cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
     # img = cv2.imread("color_test.jpg")
 
@@ -56,13 +56,13 @@ def extract_elements(filename):
 
 
     boundaries = [
-        ([0, 0, 110], [180, 100, 255]), # red
-        ([0, 0, 0], [255, 145, 75]) # green
+        [[0, 0, 110], [180, 100, 255]], # red
+        [[0, 0, 0], [255, 145, 75]] # green
     ]
 
     elements = {}
 
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    #hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
     # loop over the boundaries
     for count, bounds in enumerate(boundaries):
@@ -76,7 +76,7 @@ def extract_elements(filename):
         # the mask
         
         mask = cv2.inRange(hsv, lower, upper)
-        output = cv2.bitwise_and(hsv, hsv, mask = mask)
+        output = cv2.bitwise_and(hsv, image, mask = mask)
 
         # cv2.imshow('op', output)
         # cv2.waitKey(0)
