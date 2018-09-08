@@ -65,8 +65,6 @@ def extract_elements(filename):
 
         gray=cv2.cvtColor(output,cv2.COLOR_BGR2GRAY)
         edged = cv2.Canny(output, 10, 250)
-        # cv2.imshow('edged', edged)
-        # cv2.waitKey(0)
 
         _, cnts, _ = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         x1,y1,w1,h1 = cv2.boundingRect(edged)
@@ -89,8 +87,4 @@ def extract_elements(filename):
                 if color == 'red_':
                     text, element = extract_text(imagefile)
                 elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
-
-    output_file = '%s.json' % filename[:-4]
-
-    with open(output_file, 'w') as fp:
-        json.dump(elements, fp, indent = 4)
+    return elements
