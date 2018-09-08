@@ -17,8 +17,6 @@ export default class CameraExample extends React.Component {
     flashMode: Camera.Constants.FlashMode.off
     };
 
-
-
   componentDidMount() {
     this.interval = setInterval(() => this.takePicture(), 1000);
   }
