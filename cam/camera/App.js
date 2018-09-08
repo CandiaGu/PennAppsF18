@@ -18,11 +18,11 @@ export default class CameraExample extends React.Component {
     };
 
   componentDidMount() {
-    //this.interval = setInterval(() => this.takePicture(), 1000);
+    this.interval = setInterval(() => this.takePicture(), 1000);
   }
 
   componentWillUnmount() {
-    //clearInterval(this.interval);
+    clearInterval(this.interval);
   }
 
   async componentWillMount() {
@@ -32,9 +32,6 @@ export default class CameraExample extends React.Component {
 
 
   takePicture = () => {
-    // try {
-    //   if (this.camera) {
-    //       //
       try{
       let photo = this.camera.takePictureAsync({quality:0.1, base64:true}).then(data => {
       console.log(data.base64);
@@ -60,22 +57,6 @@ export default class CameraExample extends React.Component {
     
   }
 
-  sendIMG = (base64) => {
-    fetch('https://mywebsite.com/endpoint/', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      base64: base64
-    }),
-  })
-  .catch((error) =>{
-    console.error(error);
-  });
-    console.log("sending img")
-  }
 
   
 
