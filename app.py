@@ -3,8 +3,11 @@ from yattag import Doc
 from flask import request, render_template
 import base64
 import json
+# from imgproc import convertImgtoInfo
+# from selenium import webdriver
 
 app = Flask(__name__)
+# driver = webdriver.Chrome()
 
 def format_style(d):
 	s = ""
@@ -12,8 +15,12 @@ def format_style(d):
 	return s
 
 def generate_code():
-    with open('example.json') as f:
-    	data = json.load(f)    
+    # with open('example.json') as f:
+    # 	data = json.load(f)    
+
+    convertBase64toJPG()
+
+
     doc, tag, text = Doc().tagtext()
 
     with tag('html'):
@@ -38,20 +45,24 @@ def index():
 
 @app.route('/disp',methods=["GET"])
 def disp():
-    return app.send_static_file('test.html')
+    return render_template('test.html')
 
 
 @app.route('/getRequest',methods=["POST"])
 def handle_request():
-    # img = base64.decodestring(request.headers[b'Base64']) 
-    # doesnt work for some reason?
     imgencoded = request.get_json()
     imgencoded = imgencoded['base64']
-    f = open("static/test.html", "w")
-    f.write(imgencoded)
-    f.close()
-    return imgencoded
+    imgencoded = imgencoded.encode()
+    imgencoded = base64.decodestring(imgencoded) 
+    image_result = open('static/img_2_proccess.jpg', 'wb') 
+    image_result.write(imgencoded)
+    return "yes"
+
+
+    # driver.get("http://pennappsuiapp.herokuapp.com/disp");  
+
     # return render_template('pic.html', txt = imgencoded)
     # image_result = open('image.jpg', 'wb')
     # image_result.write(img)
     # return str(request.headers)
+

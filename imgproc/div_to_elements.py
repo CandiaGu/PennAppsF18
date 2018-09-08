@@ -87,4 +87,6 @@ def extract_elements(filename):
                 if color == 'red_':
                     text, element = extract_text(imagefile)
                 elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
+
     return elements
+

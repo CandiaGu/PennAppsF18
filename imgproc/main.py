@@ -22,8 +22,6 @@ def convertImgtoInfo(filename):
         div_elements = div_to_elements.extract_elements(div)
         divs[div] = div_elements
 
-    print divs
     return divs
-
 
 main()
