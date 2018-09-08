@@ -90,7 +90,8 @@ def extract_elements(filename):
                     text, element = extract_text(imagefile)
                 elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
 
-    output_file = '%s.json' % filename[:-4]
+    return elements
+    # output_file = '%s.json' % filename[:-4]
 
-    with open(output_file, 'w') as fp:
-        json.dump(elements, fp, indent = 4)
+    # with open(output_file, 'w') as fp:
+    #     json.dump(elements, fp, indent = 4)

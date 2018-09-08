@@ -4,6 +4,10 @@ import div_to_elements
 def main():
     filename = 'test2.jpg'
 
+    convertImgtoInfo(filename)
+
+def convertImgtoInfo(filename):
+
     num_divs = paper_to_div.convert(filename)
 
     divs = []
@@ -14,9 +18,11 @@ def main():
     
     for i in range(num_divs):
         div = filename[:-4] + '_%d' % (i + 1) + '.jpg'
-        div_to_elements.extract_elements(div)
-        divs.append(div[:-4] + '.json')
+        divs.append(div_to_elements.extract_elements(div))
+        ##divs.append(div[:-4] + '.json')
 
+    print(divs)
 
+    return divs
 
 main()

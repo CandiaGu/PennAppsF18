@@ -3,6 +3,7 @@ from yattag import Doc
 from flask import request, render_template
 import base64
 import json
+from imgproc import convertImgtoInfo
 
 app = Flask(__name__)
 
@@ -12,8 +13,12 @@ def format_style(d):
 	return s
 
 def generate_code():
-    with open('example.json') as f:
-    	data = json.load(f)    
+    # with open('example.json') as f:
+    # 	data = json.load(f)    
+
+    convertBase64toJPG()
+
+
     doc, tag, text = Doc().tagtext()
 
     with tag('html'):
@@ -29,6 +34,13 @@ def generate_code():
     f = open("static/index.html", "w")
     f.write(doc.getvalue())
     f.close()
+
+def convertBase64toJPG(base64):
+    image_64_encode = image_64_encode.encode()
+    image_64_decode = base64.decodestring(image_64_encode) 
+    image_result = open('fuckme.jpg', 'wb') 
+    image_result.write(image_64_decode)
+    return 
 
 
 @app.route('/',methods=["GET"])

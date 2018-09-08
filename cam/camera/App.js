@@ -18,11 +18,11 @@ export default class CameraExample extends React.Component {
     };
 
   componentDidMount() {
-    this.interval = setInterval(() => this.takePicture(), 1000);
+    //this.interval = setInterval(() => this.takePicture(), 1000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    //clearInterval(this.interval);
   }
 
   async componentWillMount() {
@@ -35,10 +35,10 @@ export default class CameraExample extends React.Component {
     // try {
     //   if (this.camera) {
     //       //
-    try{
-      let photo = this.camera.takePictureAsync({base64:true}).then(data => {
+      try{
+      let photo = this.camera.takePictureAsync({quality:0.1, base64:true}).then(data => {
       console.log(data.base64);
-      fetch('https://mywebsite.com/endpoint/', {
+      fetch('http://pennappsuiapp.herokuapp.com/getRequest', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -48,7 +48,7 @@ export default class CameraExample extends React.Component {
           base64: data.base64
         }),
       });
-        console.log("sending img")
+        console.log("sending img2")
     });
       
     }
