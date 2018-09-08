@@ -7,7 +7,7 @@ import json
 # from selenium import webdriver
 
 app = Flask(__name__)
-driver = webdriver.Chrome()
+# driver = webdriver.Chrome()
 
 def format_style(d):
 	s = ""
