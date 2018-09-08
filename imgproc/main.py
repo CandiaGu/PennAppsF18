@@ -19,9 +19,10 @@ def convertImgtoInfo(filename):
     
     for i in range(num_divs):
         div = filename[:-4] + '_div_%d' % (i + 1) + '.jpg'
-        div_elements = div_to_elements.extract_elements(div)
-        divs[div] = div_elements
+        div_elements, div_height, div_width = div_to_elements.extract_elements(div)
+        divs[div] = {'height': div_height, 'width': div_width, 'elements': div_elements}
 
+    print json.dumps(divs, sort_keys=True, indent=4)
     return divs
 
 main()
