@@ -4,8 +4,12 @@ from flask import request, render_template
 import base64
 import json
 from imgproc import convertImgtoInfo
+from selenium import webdriver
+
+
 
 app = Flask(__name__)
+driver = webdriver.Chrome()
 
 def format_style(d):
 	s = ""
@@ -36,7 +40,6 @@ def generate_code():
     f.close()
 
 def convertBase64toJPG(base64):
-    image_64_encode = image_64_encode.encode()
     image_64_decode = base64.decodestring(image_64_encode) 
     image_result = open('fuckme.jpg', 'wb') 
     image_result.write(image_64_decode)
@@ -62,8 +65,13 @@ def handle_request():
     f = open("static/test.html", "w")
     f.write(imgencoded)
     f.close()
+
+    driver.get("http://pennappsuiapp.herokuapp.com/disp");  
+
+
     return imgencoded
     # return render_template('pic.html', txt = imgencoded)
     # image_result = open('image.jpg', 'wb')
     # image_result.write(img)
     # return str(request.headers)
+
