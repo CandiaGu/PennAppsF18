@@ -3,7 +3,7 @@ from yattag import Doc
 from flask import request, render_template
 import base64
 import json
-from imgproc import convertImgtoInfo
+# from imgproc/main import convertImgtoInfo
 
 app = Flask(__name__)
 
@@ -35,13 +35,6 @@ def generate_code():
     f.write(doc.getvalue())
     f.close()
 
-def convertBase64toJPG(base64):
-    image_64_encode = image_64_encode.encode()
-    image_64_decode = base64.decodestring(image_64_encode) 
-    image_result = open('fuckme.jpg', 'wb') 
-    image_result.write(image_64_decode)
-    return 
-
 
 @app.route('/',methods=["GET"])
 def index():
@@ -50,7 +43,7 @@ def index():
 
 @app.route('/disp',methods=["GET"])
 def disp():
-    return app.send_static_file('test.html')
+    return render_template('test.html')
 
 
 @app.route('/getRequest',methods=["POST"])
@@ -59,10 +52,11 @@ def handle_request():
     # doesnt work for some reason?
     imgencoded = request.get_json()
     imgencoded = imgencoded['base64']
-    f = open("static/test.html", "w")
-    f.write(imgencoded)
-    f.close()
-    return imgencoded
+    imgencoded = imgencoded.encode()
+    imgencoded = base64.decodestring(imgencoded) 
+    image_result = open('static/img_2_proccess.jpg', 'wb') 
+    image_result.write(imgencoded)
+    return "yes"
     # return render_template('pic.html', txt = imgencoded)
     # image_result = open('image.jpg', 'wb')
     # image_result.write(img)
