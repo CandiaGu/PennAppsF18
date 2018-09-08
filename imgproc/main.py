@@ -2,7 +2,7 @@ import paper_to_div
 import div_to_elements
 
 def main():
-    filename = 'test_2.jpg'
+    filename = 'test2.jpg'
 
     num_divs = paper_to_div.convert(filename)
 
@@ -14,7 +14,6 @@ def main():
     
     for i in range(num_divs):
         div = filename[:-4] + '_%d' % (i + 1) + '.jpg'
-        # div = 'color_test.jpg'
         div_to_elements.extract_elements(div)
         divs.append(div[:-4] + '.json')
 

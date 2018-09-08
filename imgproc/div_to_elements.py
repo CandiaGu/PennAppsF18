@@ -35,7 +35,7 @@ def extract_text(filename):
             textType="header"
     else:
         textType="regular"
-    return (text,textType)
+    return text,textType
 
 def extract_elements(filename):
 
@@ -44,7 +44,7 @@ def extract_elements(filename):
     image = cv2.imread(filename)
 
     boundaries = [
-        [[0, 0, 110], [180, 100, 255]], # red
+        [[0, 0, 120], [75, 75, 255]], # red
         [[0, 0, 0], [255, 145, 75]] # green
     ]
 
@@ -59,31 +59,36 @@ def extract_elements(filename):
         lower = np.array(lower, dtype = "uint8")
         upper = np.array(upper, dtype = "uint8")
      
-        # find the colors within the specified boundaries and apply
-        # the mask
+        # find the colors within the specified boundaries and apply the mask
         mask = cv2.inRange(image, lower, upper)
         output = cv2.bitwise_and(image, image, mask = mask)
 
         gray=cv2.cvtColor(output,cv2.COLOR_BGR2GRAY)
         edged = cv2.Canny(output, 10, 250)
+        # cv2.imshow('edged', edged)
+        # cv2.waitKey(0)
 
         _, cnts, _ = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        x1,y1,w1,h1 = cv2.boundingRect(edged)
+        width_bound = 0.3 * w1
+        height_bound = 0.3 * h1
 
         idx = 0
         color = 'red_' if count == 0 else 'green_'
         for c in cnts:
             x,y,w,h = cv2.boundingRect(c)
-            if w>500 and h>500:
+            if w>width_bound and h>height_bound:
                 idx+=1
                 new_img=image[y:y+h,x:x+w]
-                imagefile = color + str(idx) + '.png'
+                imagefile = filename[:-4] + '_' + color + str(idx) + '.jpg'
                 cv2.imwrite(imagefile, new_img)
 
                 # top left corner of element relative to div class image picture
                 text = ''
-                if color == 'green':
-                    text = extract_text(imagefile)
-                elements[imagefile] = {'x-position': x, 'y-position': y, 'element': color[:-1], 'width': w, 'height': h, 'text': text}
+                element = 'image'
+                if color == 'red_':
+                    text, element = extract_text(imagefile)
+                elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
 
     output_file = '%s.json' % filename[:-4]
 
