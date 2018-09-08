@@ -5,6 +5,10 @@ import json
 def main():
     filename = 'test2.jpg'
 
+    convertImgtoInfo(filename)
+
+def convertImgtoInfo(filename):
+
     num_divs = paper_to_div.convert(filename)
 
     divs = {}
@@ -18,10 +22,8 @@ def main():
         div_elements = div_to_elements.extract_elements(div)
         divs[div] = div_elements
 
-    output_file = '%s.json' % filename[:-4]
-
-    with open(output_file, 'w') as fp:
-        json.dump(divs, fp, indent = 4, sort_keys = True)
+    print divs
+    return divs
 
 
 main()
