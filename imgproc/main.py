@@ -3,7 +3,11 @@ import div_to_elements
 import json
 
 def main():
-    filename = 'thresh2.jpg'
+    filename = 'test2.jpg'
+
+    convertImgtoInfo(filename)
+
+def convertImgtoInfo(filename):
 
     num_divs = paper_to_div.convert(filename)
 
@@ -15,13 +19,10 @@ def main():
     
     for i in range(num_divs):
         div = filename[:-4] + '_div_%d' % (i + 1) + '.jpg'
-        div_elements = div_to_elements.extract_elements(div)
-        divs[div] = div_elements
+        div_elements, div_height, div_width = div_to_elements.extract_elements(div)
+        divs[div] = {'height': div_height, 'width': div_width, 'elements': div_elements}
 
-    output_file = '%s.json' % filename[:-4]
-
-    with open(output_file, 'w') as fp:
-        json.dump(divs, fp, indent = 4, sort_keys = True)
-
+    print json.dumps(divs, sort_keys=True, indent=4)
+    return divs
 
 main()
