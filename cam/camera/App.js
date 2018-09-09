@@ -18,7 +18,7 @@ export default class CameraExample extends React.Component {
     };
 
   componentDidMount() {
-    this.interval = setInterval(() => this.takePicture(), 1000);
+    this.interval = setInterval(() => this.takePicture(), 10000);
   }
 
   componentWillUnmount() {
@@ -35,7 +35,7 @@ export default class CameraExample extends React.Component {
       try{
       let photo = this.camera.takePictureAsync({quality:0.1, base64:true}).then(data => {
       console.log(data.base64);
-      fetch('http://pennappsuiapp.herokuapp.com/getRequest', {
+      fetch('http://uandi.herokuapp.com/getRequest', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

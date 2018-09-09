@@ -4,12 +4,12 @@ from flask import request, render_template
 import base64
 import json
 from imgproc import convertImgtoInfo
-from selenium import webdriver
+#from selenium import webdriver
 
 
 
 app = Flask(__name__)
-driver = webdriver.Chrome()
+#driver = webdriver.Chrome()
 
 def format_style(d):
 	s = ""
@@ -66,7 +66,7 @@ def handle_request():
     f.write(imgencoded)
     f.close()
 
-    driver.get("http://pennappsuiapp.herokuapp.com/disp");  
+   # driver.get("http://pennappsuiapp.herokuapp.com/disp");  
 
 
     return imgencoded
