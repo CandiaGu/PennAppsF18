@@ -24,18 +24,21 @@ def extract_text(filename):
     text = pytesseract.image_to_string(Image.open(threshFile))
     os.remove(threshFile)
 
+    if text == '':
+        return '', 'img'
+
     if text[0]=="#":
         command = text[0:2]
         text = text[3:]
         if command[1]=="L":
-            textType= "link"
+            textType= "a"
         elif command[1]=="P":
-            textType="paragraph"
+            textType="p"
         elif command[1]=="H":
-            textType="header"
+            textType="h1"
+        return text, textType
     else:
-        textType="regular"
-    return text,textType
+        return '', 'img'
 
 def extract_elements(filename):
 
@@ -83,10 +86,7 @@ def extract_elements(filename):
                 cv2.imwrite(imagefile, new_img)
 
                 # top left corner of element relative to div class image picture
-                text = ''
-                element = 'image'
-                if color == 'red_':
-                    text, element = extract_text(imagefile)
+                text, element = extract_text(imagefile)
                 elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
 
     return elements, height, width
