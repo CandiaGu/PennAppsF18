@@ -3,11 +3,13 @@ from yattag import Doc
 from flask import request, render_template
 import base64
 import json
-# from imgproc import convertImgtoInfo
-# from selenium import webdriver
+from imgproc import convertImgtoInfo
+#from selenium import webdriver
+
+
 
 app = Flask(__name__)
-# driver = webdriver.Chrome()
+#driver = webdriver.Chrome()
 
 def format_style(d):
 	s = ""
@@ -57,12 +59,4 @@ def handle_request():
     image_result = open('static/img_2_proccess.jpg', 'wb') 
     image_result.write(imgencoded)
     return "yes"
-
-
-    # driver.get("http://pennappsuiapp.herokuapp.com/disp");  
-
-    # return render_template('pic.html', txt = imgencoded)
-    # image_result = open('image.jpg', 'wb')
-    # image_result.write(img)
-    # return str(request.headers)
 
