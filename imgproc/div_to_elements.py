@@ -38,6 +38,21 @@ def extract_text(filename):
     else:
         return '', 'image'
 
+def intersect(tl1, br1, tl2, br2):
+    l1 = tl1[0]
+    r1 = br1[0]
+    t1 = tl1[1]
+    b1 = br1[1]
+
+    l2 = tl2[0]
+    r2 = br2[0]
+    t2 = tl2[1]
+    b2 = br2[1]
+
+    if l1 > r2 or r1 < l2 or t1 > b2 or b1 < t2:
+        return False
+    return True
+
 def extract_elements(filename):
 
     # filename = "color_test.jpg"
@@ -80,31 +95,48 @@ def extract_elements(filename):
 
         _, cnts, _ = cv2.findContours(edged, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         x1,y1,w1,h1 = cv2.boundingRect(edged)
-        width_bound = 0.15 * w1
-        height_bound = 0.15 * h1
+        width_bound = 0.20 * w1
+        height_bound = 0.20 * h1
 
         idx = 0
         color = 'red_' if count == 1 else 'green_'
         for c in cnts:
             x,y,w,h = cv2.boundingRect(c)
-            if (w>width_bound and h>height_bound):
-                idx+=1
-                new_img=image[y+25:y+h-25,x+25:x+w-25]
-                imagefile = filename[:-4] + '_' + color + str(idx) + '.jpg'
-                cv2.imwrite(imagefile, new_img)
+            x += 25
+            y += 25
+            w -= 25
+            h -= 25
 
-                # top left corner of element relative to div class image picture
-                text, element = extract_text(imagefile)
-                elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
-            elif ((w > 3 * width_bound and h > 0.1 * h1) or (h > 3 * height_bound and w > 0.1 * w1)):
-                idx+=1
-                new_img=image[y+25:y+h-25,x+25:x+w-25]
-                imagefile = filename[:-4] + '_' + color + str(idx) + '.jpg'
-                cv2.imwrite(imagefile, new_img)
+            good = True
+            for ele in elements:
+                img = elements[ele]
+                img_x = img['x-position']
+                img_y = img['y-position']
+                img_h = img['height']
+                img_w = img['width']
+                if intersect((x,y), (x+w,y+h), (img_x,img_y), (img_x+img_w,img_y+img_h)):
+                    good = False
+                    break
 
-                # top left corner of element relative to div class image picture
-                text, element = extract_text(imagefile)
-                elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
+            if good:
+                if (w>width_bound and h>height_bound):
+                    idx+=1
+                    new_img=image[y:y+h,x:x+w]
+                    imagefile = filename[:-4] + '_' + color + str(idx) + '.jpg'
+                    cv2.imwrite(imagefile, new_img)
+
+                    # top left corner of element relative to div class image picture
+                    text, element = extract_text(imagefile)
+                    elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
+                elif ((w > 3 * width_bound and h > 0.15 * h1) or (h > 3 * height_bound and w > 0.15 * w1)):
+                    idx+=1
+                    new_img=image[y:y+h,x:x+w]
+                    imagefile = filename[:-4] + '_' + color + str(idx) + '.jpg'
+                    cv2.imwrite(imagefile, new_img)
+
+                    # top left corner of element relative to div class image picture
+                    text, element = extract_text(imagefile)
+                    elements[imagefile] = {'x-position': x, 'y-position': y, 'element': element, 'width': w, 'height': h, 'text': text}
 
     return elements
     # output_file = '%s.json' % filename[:-4]
